@@ -1,0 +1,38 @@
+{
+  "name": "business-management-system",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "generate:api": "openapi-ts && tsx app/lib/scripts/transform-api.ts"
+  },
+  "dependencies": {
+    "@lucide/vue": "^1.40.0",
+    "@pinia/colada": "^1.4.3",
+    "@pinia/colada-plugin-cache-persister": "^1.1.1",
+    "@pinia/nuxt": "^1.0.2",
+    "@tailwindcss/vite": "^4.3.3",
+    "@vee-validate/valibot": "^4.15.1",
+    "idb-keyval": "^6.3.0",
+    "nuxt": "^4.5.2",
+    "pinia": "^4.0.3",
+    "reka-ui": "^2.10.4",
+    "tailwindcss": "^4.3.3",
+    "valibot": "^1.4.2",
+    "vee-validate": "^4.15.1",
+    "vue": "^3.5.41",
+    "vue-router": "^5.2.0"
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "^0.99.0",
+    "@types/node": "^26.4.0",
+    "dotenv": "^17.4.2",
+    "ts-morph": "^28.0.0",
+    "tsx": "^4.23.12",
+    "typescript": "5.9.3"
+  }
+}
