@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-overlay: var(--bg-overlay);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --color-bg-1: var(--bg-1);
+  --color-bg-2: var(--bg-2);
+  --color-bg-3: var(--bg-3);
+
+  --color-text-1: var(--text-1);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-text-inverse: var(--text-inverse);
+
+  --color-border-1: var(--border-1);
+  --color-border-2: var(--border-2);
+  --color-border-focus: var(--border-focus);
+
+  --color-primary-1: var(--primary-1);
+  --color-primary-2: var(--primary-2);
+  --color-primary-text: var(--primary-text);
+
+  --color-error-1: var(--error-1);
+  --color-error-text: var(--error-text);
+
+  --color-success-1: var(--success-1);
+  --color-success-text: var(--success-text);
+
+  --color-warning-1: var(--warning-1);
+  --color-warning-text: var(--warning-text);
+
+  --color-info-1: var(--info-1);
+  --color-info-text: var(--info-text);
+
+  --text-size-xs: var(--text-size-xs);
+  --text-size-sm: var(--text-size-sm);
+  --text-size-base: var(--text-size-base);
+  --text-size-md: var(--text-size-md);
+  --text-size-lg: var(--text-size-lg);
+  --text-size-xl: var(--text-size-xl);
+}
+
+@layer base {
+  :root {
+    --bg-1: #ffffff;
+    --bg-2: #f4f4f5;
+    --bg-3: #e4e4e7;
+    --bg-overlay: rgba(0, 0, 0, 0.4);
+
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+
+    --text-1: #09090b;
+    --text-2: #71717a;
+    --text-3: #a1a1aa;
+    --text-inverse: #ffffff;
+
+    --border-1: #f4f4f5;
+    --border-2: #e4e4e7;
+    --border-focus: #2563eb;
+
+    --primary-1: #2563eb;
+    --primary-2: #1d4ed8;
+    --primary-text: #ffffff;
+
+    --error-1: #ef4444;
+    --error-text: #ffffff;
+
+    --success-1: #22c55e;
+    --success-text: #ffffff;
+
+    --warning-1: #f59e0b;
+    --warning-text: #ffffff;
+
+    --info-1: #3b82f6;
+    --info-text: #ffffff;
+
+    --text-size-xs: 0.75rem;
+    --text-size-sm: 0.875rem;
+    --text-size-base: 1rem;
+    --text-size-md: 1.125rem;
+    --text-size-lg: 1.25rem;
+    --text-size-xl: 1.5rem;
+  }
+  
+  .dark {
+    --bg-1: #09090b;
+    --bg-2: #18181b;
+    --bg-3: #27272a;
+    --bg-overlay: rgba(0, 0, 0, 0.6);
+
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+
+    --text-1: #fafafa;
+    --text-2: #a1a1aa;
+    --text-3: #71717a;
+    --text-inverse: #09090b;
+
+    --border-1: #18181b;
+    --border-2: #27272a;
+    --border-focus: #3b82f6;
+
+    --primary-1: #3b82f6;
+    --primary-2: #2563eb;
+    --primary-text: #ffffff;
+
+    --error-1: #7f1d1d;
+    --error-text: #fef2f2;
+
+    --success-1: #166534;
+    --success-text: #f0fdf4;
+
+    --warning-1: #78350f;
+    --warning-text: #fffbeb;
+
+    --info-1: #1e3a8a;
+    --info-text: #eff6ff;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) {
+      --bg-1: #09090b;
+      --bg-2: #18181b;
+      --bg-3: #27272a;
+      --bg-overlay: rgba(0, 0, 0, 0.6);
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+
+      --text-1: #fafafa;
+      --text-2: #a1a1aa;
+      --text-3: #71717a;
+      --text-inverse: #09090b;
+
+      --border-1: #18181b;
+      --border-2: #27272a;
+      --border-focus: #3b82f6;
+
+      --primary-1: #3b82f6;
+      --primary-2: #2563eb;
+      --primary-text: #ffffff;
+
+      --error-1: #7f1d1d;
+      --error-text: #fef2f2;
+
+      --success-1: #166534;
+      --success-text: #f0fdf4;
+
+      --warning-1: #78350f;
+      --warning-text: #fffbeb;
+
+      --info-1: #1e3a8a;
+      --info-text: #eff6ff;
+    }
+  }
+
+  body {
+    background-color: var(--bg-1);
+    color: var(--text-1);
+    font-size: var(--text-size-base);
+  }
+}
