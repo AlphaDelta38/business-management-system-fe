@@ -1,19 +1,8 @@
 import { createUseCase, type getUseCaseActionData } from "@/core/utils";
 
-export default createUseCase(({ httpClient, userStore, router }) => ({
+export default createUseCase(({ httpClient }) => ({
   getMyInfo: async (data: getUseCaseActionData<'/user', "GET">) => {
-    try {
-      const respose = await httpClient({ method: 'GET', url: '/user', ...data })
-
-      if (respose.data && respose.status === 'success') {
-        userStore.setUser(respose.data)
-      }
-
-      return respose
-    } catch (error) {
-      router.replace('/auth')
-      throw error
-    }
+    return await httpClient({ method: 'GET', url: '/user', ...data })
   },
   deleteAccount: async (data: getUseCaseActionData<'/user', "DELETE">) => {
     return await httpClient({ method: 'DELETE', url: '/user', ...data })

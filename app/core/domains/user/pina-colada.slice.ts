@@ -13,7 +13,7 @@ export default createPinacoladaSlice<ReturnType<typeof UserUseCase>>()((useCase)
     query: () => useCase.getMyInfo(data)
   }),
 
-  useChangeWorkspace: (data: GetDataFromUseCaseAction<typeof useCase.changeWorkspace>) => useMutation({
-    mutation: () => useCase.changeWorkspace(data)
+  useChangeWorkspace: () => useMutation({
+    mutation: (data: GetDataFromUseCaseAction<typeof useCase.changeWorkspace>) => useCase.changeWorkspace(data)
   })
 }))

@@ -60,4 +60,6 @@ const activeTab = ref('login')
 function onSuccess() {
   window.location.href = '/'
 }
+
+definePageMeta({ layout: false })
 </script>

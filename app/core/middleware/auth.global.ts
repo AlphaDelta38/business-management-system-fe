@@ -1,7 +1,8 @@
 import { useUserStore } from '@/lib/stores/user.store'
 
-export default defineNuxtRouteMiddleware(async () => {
+export default defineNuxtRouteMiddleware(async (to) => {
   const userStore = useUserStore()
+  const isAuthPage = to.path.startsWith('/auth')
 
   if (userStore.isAuth || userStore.initialized) {
     return
@@ -18,7 +19,11 @@ export default defineNuxtRouteMiddleware(async () => {
     })
 
     if (response.status === 'success' && response.data) {
-      return userStore.setUser(response.data)
+      userStore.setUser(response.data)
+    }
+
+    if (userStore.isAuth && isAuthPage) {
+      return navigateTo('/')
     }
   } catch {
     return navigateTo('/auth')
