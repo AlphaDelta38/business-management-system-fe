@@ -1,6 +1,7 @@
-import type { createHttp, HttpProps } from "@/core/http";
+import type { ApiError, createHttp, HttpProps } from "@/core/http";
 import type { Api } from "./generated/api.gen";
 import { useUserStore } from "@/lib/stores/user.store";
+import { useMutation, useQuery, type UseMutationOptions, type UseQueryOptions } from "@pinia/colada";
 
 export type UseCaseEnviroment = {
   route: ReturnType<typeof useRoute>
@@ -29,7 +30,21 @@ const createPinacoladaSlice = <T>() => {
   };
 };
 
+function createQuery<TData, TDataInitial extends TData | undefined = undefined>(
+  options: UseQueryOptions<TData, ApiError, TDataInitial>
+) {
+  return useQuery<TData, ApiError, TDataInitial>(options)
+}
+
+function createMutation<TData, TVars>(
+  options: UseMutationOptions<TData, TVars, ApiError>
+) {
+  return useMutation<TData, TVars, ApiError>(options)
+}
+
 export {
   createPinacoladaSlice,
-  createUseCase
+  createUseCase,
+  createMutation,
+  createQuery
 }

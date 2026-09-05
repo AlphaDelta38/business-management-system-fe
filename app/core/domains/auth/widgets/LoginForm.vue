@@ -1,7 +1,7 @@
 <template>
   <form class="flex flex-col gap-5" @submit="onSubmit">
-    <UiAlert v-if="loginHttp.error.value?.message" variant="error" dismissible v-model:visible="showServerError">
-      {{ loginHttp.error.value?.message }}
+    <UiAlert v-if="error?.data.message" variant="error" dismissible v-model:visible="showServerError">
+      {{ error.data.message }}
     </UiAlert>
 
     <UiInput v-model="email" :error-message="errors.email" label="Email" type="email" placeholder="you@example.com"
@@ -42,7 +42,7 @@ const {
 })
 
 const app = useNuxtApp()
-const loginHttp = app.$di.auth.useLogin()
+const { mutateAsync, error } = app.$di.auth.useLogin()
 
 const [email] = defineField('email')
 const [password] = defineField('password')
@@ -50,7 +50,7 @@ const [password] = defineField('password')
 const onSubmit = handleSubmit(async (values) => {
   showServerError.value = true
 
-  await loginHttp.mutateAsync({
+  await mutateAsync({
     options: {
       requestBody: {
         email: values.email,

@@ -1,12 +1,12 @@
-import { createPinacoladaSlice } from "~/core/utils";
+import { createMutation, createPinacoladaSlice } from "~/core/utils";
 import AuthUseCase from '@/core/domains/auth/use-case'
 import { useMutation } from "@pinia/colada";
 
 export default createPinacoladaSlice<ReturnType<typeof AuthUseCase>>()((useCase) => ({
-  useLogin: () => useMutation({
+  useLogin: () => createMutation({
     mutation: useCase.auth
   }),
-  useRegister: () => useMutation({
+  useRegister: () => createMutation({
     mutation: useCase.register
   })
 }))

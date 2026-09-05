@@ -96,6 +96,15 @@ type CreateHttpOptions = Omit<
   headers?: HeadersInit
 }
 
+export type ApiError = {
+  status: 'error'
+  data: {
+    message?: string
+    statusCode: number
+    type: string
+  }
+}
+
 export const httpClient = async <
   T extends keyof Api,
   R extends keyof Api[T],
@@ -139,10 +148,20 @@ export const httpClient = async <
   })
 
   if (!response.ok) {
-    throw new Error(`HTTP error: ${response.status}`)
+    const errorPayload = await response.json().catch(() => null)
+    const normalizedError: ApiError = errorPayload ?? {
+      status: 'error',
+      data: {
+        statusCode: response.status,
+        message: response.statusText || 'What\'s go wrong',
+        type: 'NETWORK_OR_SERVER_ERROR',
+      },
+    }
+    throw normalizedError
   }
 
   const data = await response.json()
+
 
   if (onSuccess && data) {
     onSuccess(data)

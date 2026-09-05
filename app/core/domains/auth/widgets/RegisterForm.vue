@@ -1,8 +1,8 @@
 <template>
   <form class="flex flex-col gap-5" @submit="onSubmit">
-    <UiAlert v-if="registerHttp.error.value?.message && showServerError" variant="error" dismissible
-      v-model:visible="showServerError">
-      {{ registerHttp.error.value.message }}
+    <UiAlert v-if="error?.data.message &&
+      showServerError" variant="error" dismissible v-model:visible="showServerError">
+      {{ error.data.message }}
     </UiAlert>
 
     <UiInput v-model="name" :error-message="errors.name" label="Name" type="text" placeholder="Your name"
@@ -31,7 +31,7 @@ const emit = defineEmits<{
 
 const app = useNuxtApp()
 
-const registerHttp = app.$di.auth.useRegister()
+const { mutateAsync, error } = app.$di.auth.useRegister()
 
 const showServerError = ref(true)
 
@@ -57,7 +57,7 @@ const [password] = defineField('password')
 const onSubmit = handleSubmit(async (values) => {
   showServerError.value = true
 
-  await registerHttp.mutateAsync({
+  await mutateAsync({
     options: {
       requestBody: {
         ...values
