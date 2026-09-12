@@ -5,6 +5,8 @@
     <main class="flex-1 overflow-y-auto min-w-0">
       <slot />
     </main>
+
+    <Modals />
   </div>
 </template>
 

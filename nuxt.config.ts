@@ -33,6 +33,7 @@ export default defineNuxtConfig({
     dirs: [
       '~/lib/utils',
       '~/lib/stores',
+      '~/lib/composables',
     ],
   },
 
@@ -60,6 +61,10 @@ export default defineNuxtConfig({
     },
     {
       path: '~/lib/ui',
+      pathPrefix: false,
+    },
+    {
+      path: '~/lib/modals',
       pathPrefix: false,
     },
 

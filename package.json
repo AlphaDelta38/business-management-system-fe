@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "generate:api": "openapi-ts && tsx app/lib/scripts/transform-api.ts"
+    "generate:api": "openapi-ts && tsx app/lib/scripts/transform-api.ts",
+    "generate:modals": "tsx app/lib/scripts/modals-type-generate.ts"
   },
   "dependencies": {
     "@lucide/vue": "^1.40.0",
