@@ -94,17 +94,24 @@ f:/simple-analytics-fe/
 │       │   ├── UiSelect.vue
 │       │   └── UiAlert.vue
 │       ├── components/              # Shared cross-domain components
+│       │   ├── ModalHeader.vue      # Header for modals (back, title, close slots)
+│       │   ├── ModalBody.vue        # Body container for modals (responsive padding, scroll)
 │       │   └── UserSidebarProfile.vue
+│       ├── modals/                  # Modal components (*.vue)
 │       ├── widgets/                 # Shared global/layout widgets
-│       │   └── AppSidebar.vue
+│       │   ├── AppSidebar.vue
+│       │   └── Modals.vue           # Global modal host (Teleport, animations, KeepAlive)
+│       ├── composables/             # Shared composables
+│       │   ├── modal.ts             # useModal(), export type Modals
+│       │   └── screen.ts            # useScreen() (isMobile, isTablet, isDesktop)
 │       ├── constants/
 │       │   └── provide.ts           # Typed InjectionKey symbols
 │       ├── stores/
 │       │   └── user.store.ts        # Client-side Pinia store (current user, session)
 │       ├── utils/
 │       │   └── vue.ts               # injectStrict, common Vue helpers
-│       ├── types/                   # NuxtApp augmentation ($di, $http)
-│       └── scripts/                 # OpenAPI transformation build scripts
+│       ├── types/                   # NuxtApp augmentation ($di, $http), modals types
+│       └── scripts/                 # OpenAPI & modal codegen scripts
 ```
 
 ---
@@ -276,7 +283,92 @@ const onSubmit = handleSubmit(async (values) => {
 
 ---
 
-## 10. Development Checklist for LLMs
+## 10. Modal System Architecture & Workflow
+
+The project uses a centralized, strictly typed, stacked modal architecture:
+
+### A. Creating a Modal
+All modal components live in `app/lib/modals/{Name}.vue`.
+Modals should structure their content using the shared components `<ModalHeader />` and `<ModalBody />`:
+
+```vue
+<template>
+  <ModalHeader
+    title="Edit Profile"
+    @back="close"
+    @close="close"
+  />
+  <ModalBody>
+    <!-- Modal content / forms -->
+    <p>User ID: {{ data?.userId }}</p>
+  </ModalBody>
+</template>
+
+<script setup lang="ts">
+// useModal is auto-imported
+const { close, data } = useModal('editProfile')
+</script>
+```
+
+- **`<ModalHeader />`**:
+  - Contains slots: `#left` (back button), default `#default` (title), `#right` (close button).
+  - Uses `UiButton` ghost variant.
+  - Responsive padding & design tokens.
+  - Customizable via CSS variables: `--modal-header-background`, `--modal-header-border`.
+- **`<ModalBody />`**:
+  - Full height/width container with responsive padding (`16px` mobile → `24px` sm → `32px` lg) and `overflow-y: auto`.
+  - Customizable via CSS variables: `--modal-body-background`, `--modal-body-max-width`, `--modal-body-max-height`.
+
+### B. Defining Modal Payload Types
+Modal data payloads are typed in `app/lib/composables/modal.ts` under `export type Modals`:
+
+```ts
+export type Modals = {
+  test: 123
+  test2: null
+  editProfile: {
+    userId: string
+  }
+}
+```
+- If a modal does not require data, set its type to `null`.
+- The `useModal('modalKey')` composable automatically provides strictly typed `data`.
+
+### C. Running the Code Generator
+After creating or deleting any modal in `app/lib/modals/`, run:
+```bash
+pnpm generate:modals
+```
+This script (`app/lib/scripts/modals-type-generate.ts`):
+1. Generates `ModalName` union type in `app/lib/types/modals.ts`.
+2. Safely syncs `export type Modals = { ... }` in `app/lib/composables/modal.ts` (adds new modals with `null`, removes deleted modals, **preserves existing typed payloads untouched**).
+3. Safely updates the lazy component resolution map inside `<script setup>` in `app/lib/widgets/Modals.vue` between `// @generated-modals-start` and `// @generated-modals-end`.
+
+### D. Using `useModal` Composable
+```ts
+const { open, close, closeAll, stack, data } = useModal('editProfile')
+
+// Open modal with strictly typed data:
+open('editProfile', { userId: '123' })
+
+// Close the top active modal:
+close()
+
+// Close all modals in stack:
+closeAll()
+```
+
+### E. Runtime Behavior & Features (`Modals.vue`)
+- **Centered Host**: Rendered globally in `app.vue` via `<Modals />` using `<Teleport to="body">`.
+- **Sequential Transitions**: When switching or closing modals, the outgoing modal animates out *first*, and only upon `@after-leave` does the next modal animate in (preventing layout glitches).
+- **Responsive Animations**:
+  - **Desktop (≥ 640px)**: Scale transition (`scale(0.95) → scale(1)`) centered on screen.
+  - **Mobile (< 640px)**: Slide-up bottom sheet transition (`translateY(100%) → 0`).
+- **Smart Selective KeepAlive**: Modals in the stack preserve their state (form inputs, scroll position) via `<KeepAlive :include="cachedNames">`. Once a modal is popped/closed, its cache is discarded automatically.
+
+---
+
+## 11. Development Checklist for LLMs
 
 Before delivering any Vue/Nuxt code, verify:
 - [ ] No manual imports of `ref`, `computed`, `watch`, `provide`, `inject`, `useRoute`, `useRouter`, etc.
@@ -285,3 +377,5 @@ Before delivering any Vue/Nuxt code, verify:
 - [ ] Colors and text sizes use theme tokens (`bg-bg-1`, `text-text-1`, `border-border-2`, etc.).
 - [ ] API routes and methods strictly match the OpenAPI `Api` types.
 - [ ] New shared UI primitives go to `app/lib/ui/`, cross-domain components to `app/lib/components/`, domain logic to `app/core/domains/{domain}/`.
+- [ ] New modals go to `app/lib/modals/{Name}.vue`, use `<ModalHeader />` and `<ModalBody />`, have payload typed in `export type Modals`, and `pnpm generate:modals` is executed.
+
