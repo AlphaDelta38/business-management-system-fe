@@ -1,6 +1,7 @@
 export type Modals = {
-  test: 123
-  test2: null
+  createWorkspace: {
+    onSuccess?: (workspaceId: number) => void
+  }
 }
 
 export type Modal = {

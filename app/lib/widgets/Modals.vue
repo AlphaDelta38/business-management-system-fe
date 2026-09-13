@@ -20,8 +20,7 @@
 import { resolveComponent, type Component } from 'vue'
 
 const modals: Record<keyof Modals, Component> = {
-  test: resolveComponent('LazyTest') as Component,
-  test2: resolveComponent('LazyTest2') as Component,
+  createWorkspace: resolveComponent('LazyCreateWorkspace') as Component,
 }
 // @generated-modals-end
 

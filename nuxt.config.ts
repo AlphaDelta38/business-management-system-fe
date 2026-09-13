@@ -73,7 +73,7 @@ export default defineNuxtConfig({
   ],
 
   alias: {
-    '@/schemas': fileURLToPath(new URL('./app/core/generated/valibot.gen.ts', import.meta.url))
+    '#/schemas': fileURLToPath(new URL('./app/core/generated/valibot.gen.ts', import.meta.url))
   },
 
   css: ['~/assets/css/main.css'],

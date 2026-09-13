@@ -2,11 +2,12 @@
   <div class="flex flex-col gap-2 transition-opacity duration-300"
     :class="isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'">
     <div v-if="workspaces.length === 0">
-      <button type="button"
-        class="w-full flex items-center justify-center gap-2 px-3 py-2 text-[length:--text-size-sm] text-text-2 hover:text-text-1 border border-dashed border-border-2 rounded-lg hover:bg-bg-2 transition-colors cursor-pointer">
+      <UiButton variant="outline" class="w-full border-dashed gap-2" @click="modal.open('createWorkspace', {
+        onSuccess
+      })">
         <Plus class="w-4 h-4" />
         <span>Create workspace</span>
-      </button>
+      </UiButton>
     </div>
 
     <div v-else class="w-full">
@@ -24,6 +25,8 @@ defineProps<{
 
 const userStore = useUserStore()
 const app = useNuxtApp()
+const modal = useModal()
+
 const { isLoading, mutate } = app.$di.user.useChangeWorkspace()
 
 const workspaces = computed(() => {
@@ -42,11 +45,17 @@ const selectedWorkspaceId = ref<number | string | undefined>(
   workspaces.value[0]?.workspace.id
 )
 
-watch(selectedWorkspaceId, () => {
-  if (Number.isInteger(Number(selectedWorkspaceId))) {
+function onSuccess(id: number): void {
+  if (userStore.user?.workspaces.find(item => item.id === id)) {
+    selectedWorkspaceId.value = id
+  }
+}
+
+watch(selectedWorkspaceId, (id) => {
+  if (Number.isInteger(Number(id))) {
     mutate({
       options: {
-        requestParams: { workspaceId: Number(selectedWorkspaceId.value) }
+        requestParams: { workspaceId: Number(id) }
       }
     })
   }

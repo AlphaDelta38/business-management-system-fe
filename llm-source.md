@@ -45,7 +45,7 @@ Nuxt 4 is configured with extensive auto-imports. **DO NOT write redundant manua
 - Icons from `@lucide/vue` (e.g. `import { Plus, ChevronDown, UserRound } from '@lucide/vue'`).
 - Third-party library helpers (e.g. `import { useForm } from 'vee-validate'`, `import { toTypedSchema } from '@vee-validate/valibot'`).
 - TypeScript types using `import type { ... }`.
-- Schemas from `@/schemas` (e.g. `import { vAuthDto } from '@/schemas'`).
+- Schemas from `#/schemas` (e.g. `import { vAuthDto } from '#/schemas'`).
 - Provide symbols from `~/lib/constants/provide` (e.g. `import { SideBarProvide } from '~/lib/constants/provide'`).
 
 ---
@@ -247,7 +247,7 @@ Forms must combine **vee-validate** and **Valibot**:
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/valibot'
-import { vAuthDto } from '@/schemas' // Alias to valibot.gen.ts
+import { vAuthDto } from '#/schemas' // Alias to valibot.gen.ts
 
 const { defineField, handleSubmit, errors, isSubmitting } = useForm({
   validationSchema: toTypedSchema(vAuthDto),

@@ -11,12 +11,21 @@ export type WorkspaceInUserDto = {
     updated_at: string;
 };
 
+export type PermissionInUserDto = {
+    id: number;
+    workspace_id: number;
+    name: string;
+    created_at: string;
+    updated_at: string;
+};
+
 export type UserWorkspaceInUserDto = {
     id: number;
     user_id: number;
     workspace_id: number;
     permission_id?: number;
     workspace: WorkspaceInUserDto;
+    permission?: PermissionInUserDto;
 };
 
 export type CurrentUserResponseDto = {
@@ -59,6 +68,23 @@ export type WorkspaceResponseDto = {
     name: string;
     created_at: string;
     updated_at: string;
+};
+
+export type PermissionInWorkspaceDto = {
+    id: number;
+    workspace_id: number;
+    name: string;
+    created_at: string;
+    updated_at: string;
+};
+
+export type CreateWorkspaceResponseDto = {
+    id: number;
+    user_id: number;
+    workspace_id: number;
+    permission_id?: number;
+    workspace: WorkspaceResponseDto;
+    permission: PermissionInWorkspaceDto;
 };
 
 export type CreateWorkspaceDto = {
@@ -641,7 +667,7 @@ export type WorkspaceControllerCreateResponses = {
      */
     201: {
         status?: string;
-        data?: WorkspaceResponseDto;
+        data?: CreateWorkspaceResponseDto;
     };
 };
 

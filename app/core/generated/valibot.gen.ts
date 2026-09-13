@@ -9,12 +9,21 @@ export const vWorkspaceInUserDto = v.object({
     updated_at: v.pipe(v.string(), v.isoTimestamp())
 });
 
+export const vPermissionInUserDto = v.object({
+    id: v.number(),
+    workspace_id: v.number(),
+    name: v.string(),
+    created_at: v.pipe(v.string(), v.isoTimestamp()),
+    updated_at: v.pipe(v.string(), v.isoTimestamp())
+});
+
 export const vUserWorkspaceInUserDto = v.object({
     id: v.number(),
     user_id: v.number(),
     workspace_id: v.number(),
     permission_id: v.optional(v.number()),
-    workspace: vWorkspaceInUserDto
+    workspace: vWorkspaceInUserDto,
+    permission: v.optional(vPermissionInUserDto)
 });
 
 export const vCurrentUserResponseDto = v.object({
@@ -42,6 +51,23 @@ export const vWorkspaceResponseDto = v.object({
     name: v.string(),
     created_at: v.pipe(v.string(), v.isoTimestamp()),
     updated_at: v.pipe(v.string(), v.isoTimestamp())
+});
+
+export const vPermissionInWorkspaceDto = v.object({
+    id: v.number(),
+    workspace_id: v.number(),
+    name: v.string(),
+    created_at: v.pipe(v.string(), v.isoTimestamp()),
+    updated_at: v.pipe(v.string(), v.isoTimestamp())
+});
+
+export const vCreateWorkspaceResponseDto = v.object({
+    id: v.number(),
+    user_id: v.number(),
+    workspace_id: v.number(),
+    permission_id: v.optional(v.number()),
+    workspace: vWorkspaceResponseDto,
+    permission: vPermissionInWorkspaceDto
 });
 
 export const vCreateWorkspaceDto = v.object({
@@ -364,7 +390,7 @@ export const vWorkspaceControllerCreateBody = vCreateWorkspaceDto;
  */
 export const vWorkspaceControllerCreateResponse = v.object({
     status: v.optional(v.string()),
-    data: v.optional(vWorkspaceResponseDto)
+    data: v.optional(vCreateWorkspaceResponseDto)
 });
 
 export const vWorkspaceControllerJoinBody = vJoinWorkspaceDto;
