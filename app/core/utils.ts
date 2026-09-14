@@ -39,7 +39,19 @@ function createQuery<TData, TDataInitial extends TData | undefined = undefined>(
 function createMutation<TData, TVars>(
   options: UseMutationOptions<TData, TVars, ApiError>
 ) {
-  return useMutation<TData, TVars, ApiError>(options)
+  const mutation = useMutation<TData, TVars, ApiError>(options)
+
+  return {
+    ...mutation,
+
+    safeMutateAsync: async (vars: TVars) => {
+      try {
+        return await mutation.mutateAsync(vars)
+      } catch (err) {
+        return err as ApiError
+      }
+    },
+  }
 }
 
 export {

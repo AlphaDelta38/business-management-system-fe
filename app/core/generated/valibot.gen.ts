@@ -74,19 +74,19 @@ export const vCreateWorkspaceDto = v.object({
     name: v.pipe(v.string(), v.maxLength(100))
 });
 
+export const vJoinWorkspaceDto = v.object({
+    code: v.pipe(v.string(), v.minLength(1))
+});
+
+export const vUpdateWorkspaceDto = v.object({
+    name: v.optional(v.pipe(v.string(), v.maxLength(100)))
+});
+
 export const vUserWorkspaceResponseDto = v.object({
     id: v.number(),
     user_id: v.number(),
     workspace_id: v.number(),
     permission_id: v.optional(v.number())
-});
-
-export const vJoinWorkspaceDto = v.object({
-    code: v.string()
-});
-
-export const vUpdateWorkspaceDto = v.object({
-    name: v.optional(v.pipe(v.string(), v.maxLength(100)))
 });
 
 export const vRuleInPermissionDto = v.object({
@@ -400,7 +400,7 @@ export const vWorkspaceControllerJoinBody = vJoinWorkspaceDto;
  */
 export const vWorkspaceControllerJoinResponse = v.object({
     status: v.optional(v.string()),
-    data: v.optional(vUserWorkspaceResponseDto)
+    data: v.optional(vCreateWorkspaceResponseDto)
 });
 
 export const vWorkspaceControllerRemovePath = v.object({

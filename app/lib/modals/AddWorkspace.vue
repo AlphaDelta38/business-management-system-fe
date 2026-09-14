@@ -1,12 +1,12 @@
 <template>
-  <ModalHeader title="Create workspace" @back="close" @close="close" />
+  <ModalHeader title="Add Workspace" @back="close" @close="close" />
   <ModalBody>
-    <CreateWorkspaceForm @success="onClose" />
+    <AddWorkspaceForm @success="onClose" />
   </ModalBody>
 </template>
 
 <script setup lang="ts">
-const { close, data } = useModal('createWorkspace')
+const { close, data } = useModal('addWorkspace')
 
 const onClose = (id?: number): void => {
   if (data?.onSuccess) {

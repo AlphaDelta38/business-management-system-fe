@@ -94,13 +94,6 @@ export type CreateWorkspaceDto = {
     name: string;
 };
 
-export type UserWorkspaceResponseDto = {
-    id: number;
-    user_id: number;
-    workspace_id: number;
-    permission_id?: number;
-};
-
 export type JoinWorkspaceDto = {
     /**
      * Invite code
@@ -113,6 +106,13 @@ export type UpdateWorkspaceDto = {
      * Workspace name
      */
     name?: string;
+};
+
+export type UserWorkspaceResponseDto = {
+    id: number;
+    user_id: number;
+    workspace_id: number;
+    permission_id?: number;
 };
 
 export type RuleInPermissionDto = {
@@ -697,7 +697,7 @@ export type WorkspaceControllerJoinResponses = {
      */
     201: {
         status?: string;
-        data?: UserWorkspaceResponseDto;
+        data?: CreateWorkspaceResponseDto;
     };
 };
 
