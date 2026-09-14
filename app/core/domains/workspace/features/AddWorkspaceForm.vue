@@ -85,9 +85,9 @@ const onSubmit = handleSubmit(async (values) => {
       },
     })
 
-    if (response.status === 'success' && response.data) {
-      userStore.user?.workspaces.push(response.data)
-      emit('success', response.data?.workspace_id)
+    if (response && response.status === 'success' && response.data) {
+      userStore.user?.workspaces.push(response.data as any)
+      emit('success', response.data?.workspace_id ?? 0)
     }
   } else if ('name' in values) {
     const response = await createWorkspace({

@@ -105,6 +105,10 @@ export type ApiError = {
   }
 }
 
+export type SuccessResponse<T> = T extends { status?: string } 
+  ? Omit<T, 'status'> & { status?: 'success' } 
+  : T;
+
 export const httpClient = async <
   T extends keyof Api,
   R extends keyof Api[T],
@@ -116,7 +120,7 @@ export const httpClient = async <
     onSuccess,
     baseUrl,
   }: HttpProps<T, R>
-): Promise<ApiResponse<T, R>> => {
+): Promise<SuccessResponse<ApiResponse<T, R>>> => {
   const {
     requestParams,
     requestQuery,
@@ -180,7 +184,7 @@ export const createHttp = ({
     R extends keyof Api[T],
   >(
     props: HttpProps<T, R>
-  ): Promise<ApiResponse<T, R>> => {
+  ): Promise<SuccessResponse<ApiResponse<T, R>>> => {
     return httpClient<T, R>({
       ...props,
       baseUrl,
