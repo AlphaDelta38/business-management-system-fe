@@ -7,7 +7,4 @@ export default createUseCase(({ httpClient }) => ({
   deleteAccount: async (data: getUseCaseActionData<'/user', "DELETE">) => {
     return await httpClient({ method: 'DELETE', url: '/user', ...data })
   },
-  changeWorkspace: async (data: getUseCaseActionData<'/user/set_workspace/{workspaceId}', "POST">) => {
-    return await httpClient({ method: 'POST', url: '/user/set_workspace/{workspaceId}', ...data })
-  }
 }))

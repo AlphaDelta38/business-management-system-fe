@@ -11,7 +11,7 @@
         :aria-label="!isOpen && !isMobile ? 'Expand sidebar' : undefined"
         :title="!isOpen && !isMobile ? 'Expand sidebar' : undefined" @click="!isOpen && !isMobile && toggle()"
         @keydown.enter="!isOpen && !isMobile && toggle()" @keydown.space.prevent="!isOpen && !isMobile && toggle()">
-        <UserSidebarProfile :is-open="isOpen" class="flex-1" />
+        <UserSidebarProfile :isOpen="isOpen" class="flex-1" />
 
         <Transition enter-active-class="transition-opacity duration-200 ease-out" enter-from-class="opacity-0"
           enter-to-class="opacity-100" leave-active-class="transition-opacity duration-150 ease-in"

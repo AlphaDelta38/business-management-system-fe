@@ -3,7 +3,7 @@
     :class="isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'">
     <div v-if="workspaces.length === 0">
       <UiButton variant="outline" class="w-full border-dashed gap-2" @click="modal.open('addWorkspace', {
-        onSuccess
+        onSuccess: onChange
       })">
         <Plus class="w-4 h-4" />
         <span>Add workspace</span>
@@ -11,12 +11,13 @@
     </div>
 
     <div v-else class="w-full">
-      <UiSelect v-model="selectedWorkspaceId" :items="workspaceOptions" placeholder="Select workspace">
+      <UiSelect :modelValue="userStore.workspaceId ?? 0" @change="onChange" :items="workspaceOptions"
+        placeholder="Select workspace">
         <template #footer>
           <div class="my-1 border-t border-border-2 -mx-1" />
           <UiButton variant="ghost" size="sm"
             class="w-full justify-start px-2 font-normal text-text-2 hover:text-text-1" @click="modal.open('addWorkspace', {
-              onSuccess
+              onSuccess: onChange
             })">
             <Plus class="w-4 h-4 shrink-0" />
             <span>Add workspace</span>
@@ -35,10 +36,7 @@ defineProps<{
 }>()
 
 const userStore = useUserStore()
-const app = useNuxtApp()
 const modal = useModal()
-
-const { isLoading, mutate } = app.$di.user.useChangeWorkspace()
 
 const workspaces = computed(() => {
   return userStore.user?.workspaces || []
@@ -48,27 +46,12 @@ const workspaceOptions = computed(() => {
   return workspaces.value.map(w => ({
     label: w.workspace.name,
     value: w.workspace.id,
-    disabled: isLoading.value
   }))
 })
 
-const selectedWorkspaceId = ref<number | string | undefined>(
-  workspaces.value[0]?.workspace.id
-)
-
-function onSuccess(id: number): void {
-  if (userStore.user?.workspaces.find(item => item.id === id)) {
-    selectedWorkspaceId.value = id
+function onChange(id: number | string): void {
+  if (Number.isInteger(Number(id)) && userStore.user?.workspaces.find(item => item.id === id)) {
+    userStore.setWorkspaceId(Number(id))
   }
 }
-
-watch(selectedWorkspaceId, (id) => {
-  if (Number.isInteger(Number(id))) {
-    mutate({
-      options: {
-        requestParams: { workspaceId: Number(id) }
-      }
-    })
-  }
-}, { immediate: true })
 </script>

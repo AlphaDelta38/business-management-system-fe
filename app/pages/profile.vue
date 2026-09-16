@@ -3,10 +3,10 @@
     <div class="max-w-360 mx-auto flex flex-col gap-6">
       <div class="flex flex-col gap-1 border-b border-border-2 pb-5">
         <h1 class="text-2xl sm:text-3xl font-bold text-text-1 tracking-tight">
-          Settings
+          Profile Settings
         </h1>
         <p class="text-sm text-text-2">
-          Manage your account profile and workspace preferences.
+          Manage your account profile
         </p>
       </div>
 
