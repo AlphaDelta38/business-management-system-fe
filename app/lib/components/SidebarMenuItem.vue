@@ -21,10 +21,11 @@ const props = withDefaults(defineProps<{
   title?: string
   to?: string
   icon?: Component
-  active?: boolean
+  active?: boolean | null
   block?: boolean
 }>(), {
   block: true,
+  active: null,
 })
 
 const emit = defineEmits<{
@@ -36,7 +37,7 @@ const isSidebarOpen = injectStrict(SideBarProvide.isOpen)
 const isOpen = computed(() => isSidebarOpen.value)
 
 const isActive = computed(() => {
-  if (props.active !== undefined) {
+  if (props.active !== null && props.active !== undefined) {
     return props.active
   }
 

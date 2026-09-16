@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-screen w-full bg-bg-2 overflow-hidden text-text-1">
-    <AppSidebar :isOpen="isSidebarOpen" :toggle="toggleSidebar" />
+    <AppSidebar />
 
     <main class="flex-1 overflow-y-auto min-w-0 pb-16 md:pb-0">
       <slot />
@@ -22,7 +22,7 @@
         <div v-if="isSidebarOpen"
           class="fixed bottom-0 left-0 right-0 z-50 bg-bg-1 border-t border-border-2 rounded-t-2xl h-[90dvh] max-h-[90dvh] flex flex-col overflow-hidden md:hidden shadow-2xl">
           <div class="w-10 h-1 bg-bg-3 rounded-full mx-auto mt-3 shrink-0" />
-          <AppSidebar :isOpen="true" :toggle="toggleSidebar" is-mobile />
+          <AppSidebar isMobile />
         </div>
       </Transition>
     </Teleport>

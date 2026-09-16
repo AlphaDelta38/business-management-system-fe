@@ -46,10 +46,12 @@
 
 <script setup lang="ts">
 import { Bell, Home, PanelLeftClose, Search, Settings, X } from '@lucide/vue'
+import { SideBarProvide } from '@/lib/constants/provide';
+
+const isOpen = injectStrict(SideBarProvide.isOpen)
+const toggle = injectStrict(SideBarProvide.toggleSidebar)
 
 withDefaults(defineProps<{
-  isOpen: boolean
-  toggle: () => void
   isMobile?: boolean
 }>(), {
   isMobile: false,
