@@ -30,10 +30,12 @@ const props = withDefaults(defineProps<{
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   loading?: boolean
+  active?: boolean
 }>(), {
   variant: 'primary',
   type: 'button',
   size: 'md',
+  active: false,
 })
 
 const variantClasses = computed(() => {
@@ -41,9 +43,13 @@ const variantClasses = computed(() => {
     case 'primary':
       return 'bg-primary-1 text-primary-text hover:bg-primary-2 focus-visible:ring-2 focus-visible:ring-primary-1 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-1'
     case 'outline':
-      return 'border border-border-2 bg-bg-1 text-text-1 hover:bg-bg-2 focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2 focus-visible:ring-offset-bg-1'
+      return props.active
+        ? 'border border-border-focus bg-bg-2 text-text-1 focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2 focus-visible:ring-offset-bg-1'
+        : 'border border-border-2 bg-bg-1 text-text-1 hover:bg-bg-2 focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2 focus-visible:ring-offset-bg-1'
     case 'ghost':
-      return 'text-text-2 hover:text-text-1 hover:bg-bg-3 focus-visible:ring-2 focus-visible:ring-border-focus'
+      return props.active
+        ? 'bg-bg-3 text-text-1 font-semibold focus-visible:ring-2 focus-visible:ring-border-focus'
+        : 'text-text-2 hover:text-text-1 hover:bg-bg-3 focus-visible:ring-2 focus-visible:ring-border-focus'
     default:
       return ''
   }
