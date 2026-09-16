@@ -26,7 +26,7 @@ import { Loader2 } from '@lucide/vue'
 
 const props = withDefaults(defineProps<{
   variant?: 'primary' | 'outline' | 'ghost'
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | 'icon' | 'icon-sm'
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   loading?: boolean
@@ -55,6 +55,10 @@ const sizeClasses = computed(() => {
       return 'rounded-md px-2.5 py-1.5 text-[length:--text-size-sm]'
     case 'lg':
       return 'rounded-lg px-5 py-3 text-[length:--text-size-base]'
+    case 'icon':
+      return 'rounded-lg w-9 h-9 p-0 text-[length:--text-size-sm]'
+    case 'icon-sm':
+      return 'rounded-md w-8 h-8 p-0 text-[length:--text-size-sm]'
     default:
       return 'rounded-lg px-4 py-2.5 text-[length:--text-size-sm]'
   }

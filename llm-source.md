@@ -221,7 +221,41 @@ const response = await app.$http({
 
 ---
 
-## 7. Theming & Tailwind Tokens
+## 7. Error Handling & Safe Mutations
+
+The HTTP client and Pinia Colada mutations are configured with a specific error handling pattern to prevent unhandled promise rejections and improve type narrowing:
+
+1. **`ApiError` vs `SuccessResponse`**: 
+   - Successful HTTP responses are strictly typed with `status?: 'success'` (via the `SuccessResponse<T>` wrapper).
+   - Errors are thrown as `ApiError`, which strictly has `status: 'error'`.
+   
+2. **Using `safeMutateAsync`**:
+   Instead of wrapping `mutateAsync` in `try/catch` blocks, our `$di` container provides `safeMutateAsync`. It catches errors internally and returns them. This allows elegant discriminated union checks:
+   
+```ts
+const { safeMutateAsync: join } = app.$di.workspace.useJoinToWorkspace()
+
+// No try/catch needed!
+const response = await join({
+  options: { requestBody: { code: '123' } }
+})
+
+// Narrowing via Discriminated Union:
+if (response && response.status === 'error') {
+  // TS 100% knows this is an ApiError!
+  console.error(response.data.message)
+  return
+}
+
+if (response && response.status === 'success') {
+  // TS 100% knows this is a SuccessResponse!
+  console.log(response.data)
+}
+```
+
+---
+
+## 8. Theming & Tailwind Tokens
 
 Always use design-system CSS variables mapped to Tailwind `@theme`:
 
@@ -240,7 +274,7 @@ Always use design-system CSS variables mapped to Tailwind `@theme`:
 
 ---
 
-## 8. Forms & Validation Rules
+## 9. Forms & Validation Rules
 
 Forms must combine **vee-validate** and **Valibot**:
 ```vue
@@ -268,7 +302,7 @@ const onSubmit = handleSubmit(async (values) => {
 
 ---
 
-## 9. Page Meta & Layouts
+## 10. Page Meta & Layouts
 
 - Layouts live in `app/core/layout/` (configured in `nuxt.config.ts`).
 - `default.vue` layout renders the `AppSidebar`.
@@ -283,7 +317,7 @@ const onSubmit = handleSubmit(async (values) => {
 
 ---
 
-## 10. Modal System Architecture & Workflow
+## 11. Modal System Architecture & Workflow
 
 The project uses a centralized, strictly typed, stacked modal architecture:
 
@@ -368,7 +402,7 @@ closeAll()
 
 ---
 
-## 11. Development Checklist for LLMs
+## 12. Development Checklist for LLMs
 
 Before delivering any Vue/Nuxt code, verify:
 - [ ] No manual imports of `ref`, `computed`, `watch`, `provide`, `inject`, `useRoute`, `useRouter`, etc.
